@@ -27,14 +27,14 @@ CC BY-SA 4.0 Attribution-ShareAlike 4.0 International License
 
 */
 
-#include "AgApiClient.h"
-#include "AgConfigure.h"
-#include "AgSchedule.h"
-#include "AgWiFiConnector.h"
+#include "src/AgApiClient.h"
+#include "src/AgConfigure.h"
+#include "src/AgSchedule.h"
+#include "src/AgWiFiConnector.h"
+#include "src/MqttClient.h"
+#include "src/AirGradient.h"
 #include "LocalServer.h"
 #include "OpenMetrics.h"
-#include "MqttClient.h"
-#include <AirGradient.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
@@ -133,7 +133,7 @@ void setup() {
   setMeasurementMaxPeriod();
 
   // Uncomment below line to print every measurements reading update
-  // measurements.setDebug(true);
+  measurements.setDebug(true);
 
   /** Connecting wifi */
   bool connectToWifi = false;
@@ -216,7 +216,7 @@ void loop() {
   wifiConnector.handle();
 
   /** factory reset handle */
-  // factoryConfigReset();
+  //configuration.reset();
 
   /** check that local configura changed then do some action */
   configUpdateHandle();

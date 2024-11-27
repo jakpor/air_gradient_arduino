@@ -1,11 +1,11 @@
 #ifndef _LOCAL_SERVER_H_
 #define _LOCAL_SERVER_H_
 
-#include "AgConfigure.h"
-#include "AgValue.h"
-#include "AirGradient.h"
+#include "src/AgConfigure.h"
+#include "src/AgValue.h"
+#include "src/AirGradient.h"
+#include "src/AgWiFiConnector.h"
 #include "OpenMetrics.h"
-#include "AgWiFiConnector.h"
 #include <Arduino.h>
 #include <ESP8266WebServer.h>
 
