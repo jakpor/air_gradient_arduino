@@ -1,11 +1,11 @@
 #ifndef _OPEN_METRICS_H_
 #define _OPEN_METRICS_H_
 
-#include "src/AgConfigure.h"
-#include "src/AgValue.h"
-#include "src/AgWiFiConnector.h"
-#include "src/AirGradient.h"
-#include "src/AgApiClient.h"
+#include "AgConfigure.h"
+#include "AgValue.h"
+#include "AgWiFiConnector.h"
+#include "AirGradient.h"
+#include "AgApiClient.h"
 
 class OpenMetrics {
 private:
