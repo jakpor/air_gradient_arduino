@@ -51,6 +51,7 @@ CC BY-SA 4.0 Attribution-ShareAlike 4.0 International License
 #define SENSOR_PM_UPDATE_INTERVAL 2000                /** ms */
 #define SENSOR_TEMP_HUM_UPDATE_INTERVAL 6000          /** ms */
 #define DISPLAY_DELAY_SHOW_CONTENT_MS 2000            /** ms */
+#define TEMPERATURE_OFFSET (-0.75)                    /** degree */
 
 static AirGradient ag(DIY_BASIC);
 static Configuration configuration(Serial);
@@ -377,6 +378,10 @@ static void boardInit(void) {
     configuration.hasSensorSHT = false;
     dispSensorNotFound("SHT");
   }
+  else
+  {
+    Serial.println("SHTx sensor configured");
+  }
 
   /** Init S8 CO2 sensor */
   if (ag.s8.begin(&Serial) == false) {
@@ -538,7 +543,7 @@ static void sendDataToServer(void) {
 
 static void tempHumUpdate(void) {
   if (ag.sht.measure()) {
-    float temp = ag.sht.getTemperature();
+    float temp = ag.sht.getTemperature() + TEMPERATURE_OFFSET;
     float rhum = ag.sht.getRelativeHumidity();
 
     measurements.update(Measurements::Temperature, temp);
