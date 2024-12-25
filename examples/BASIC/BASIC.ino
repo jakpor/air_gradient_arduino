@@ -51,7 +51,8 @@ CC BY-SA 4.0 Attribution-ShareAlike 4.0 International License
 #define SENSOR_PM_UPDATE_INTERVAL 2000                /** ms */
 #define SENSOR_TEMP_HUM_UPDATE_INTERVAL 6000          /** ms */
 #define DISPLAY_DELAY_SHOW_CONTENT_MS 2000            /** ms */
-#define TEMPERATURE_OFFSET (-0.75)                    /** degree */
+#define TEMPERATURE_OFFSET (-0.0)                     /** degree */
+#define SCREEN_ROTATION (2)                           /* 0-3 cardinal rotations*/
 
 static AirGradient ag(DIY_BASIC);
 static Configuration configuration(Serial);
@@ -351,6 +352,8 @@ static void boardInit(void) {
 
   /** Show boot display */
   Serial.println("Firmware Version: " + ag.getVersion());
+
+  ag.display.setRotation(SCREEN_ROTATION);
 
   if (ag.isBasic()) {
     oledDisplay.setText("DIY Basic", ag.getVersion().c_str(), "");
