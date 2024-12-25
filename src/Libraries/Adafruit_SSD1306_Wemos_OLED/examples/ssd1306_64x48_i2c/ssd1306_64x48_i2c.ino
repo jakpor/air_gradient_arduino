@@ -18,13 +18,13 @@ All text above, and the splash screen must be included in any redistribution
 
 #include <SPI.h>
 #include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#include "Adafruit_GFX.h"
+#include "Adafruit_SSD1306.h"
 
 // SCL GPIO5
 // SDA GPIO4
 #define OLED_RESET 0  // GPIO0
-Adafruit_SSD1306 display(OLED_RESET);
+Adafruit_SSD1306 display;
 
 #define NUMFLAKES 10
 #define XPOS 0
@@ -57,115 +57,130 @@ static const unsigned char PROGMEM logo16_glcd_bmp[] =
 #endif
 
 void setup()   {
-  Serial.begin(9600);
+  Serial.begin(115200);
+
+  /** Init I2C */
+  Wire.begin(4, 5);
+  delay(1000);
 
   // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 64x48)
+  display.begin(Wire, SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 64x48)
   // init done
 
   // Show image buffer on the display hardware.
   // Since the buffer is intialized with an Adafruit splashscreen
   // internally, this will display the splashscreen.
+  
+  display.ssd1306_command(0x23);
+  display.ssd1306_command(0x00);
+
+  display.ssd1306_command(SSD1306_SETPRECHARGE);
+  display.ssd1306_command(0x10);  
+
+  display.setContrast(0x01);
   display.display();
   delay(2000);
 
   // Clear the buffer.
   display.clearDisplay();
 
-  // draw a single pixel
-  display.drawPixel(10, 10, WHITE);
-  // Show the display buffer on the hardware.
-  // NOTE: You _must_ call display after making any drawing commands
-  // to make them visible on the display hardware!
-  display.display();
-  delay(2000);
-  display.clearDisplay();
+  // // draw a single pixel
+  // display.drawPixel(10, 10, WHITE);
+  // // Show the display buffer on the hardware.
+  // // NOTE: You _must_ call display after making any drawing commands
+  // // to make them visible on the display hardware!
+  // display.display();
+  // delay(2000);
+  // display.clearDisplay();
 
-  // draw many lines
-  testdrawline();
-  display.display();
-  delay(2000);
-  display.clearDisplay();
+  // // draw many lines
+  // testdrawline();
+  // display.display();
+  // delay(2000);
+  // display.clearDisplay();
 
-  // draw rectangles
-  testdrawrect();
-  display.display();
-  delay(2000);
-  display.clearDisplay();
+  // // draw rectangles
+  // testdrawrect();
+  // display.display();
+  // delay(2000);
+  // display.clearDisplay();
 
-  // draw multiple rectangles
-  testfillrect();
-  display.display();
-  delay(2000);
-  display.clearDisplay();
+  // // draw multiple rectangles
+  // testfillrect();
+  // display.display();
+  // delay(2000);
+  // display.clearDisplay();
 
-  // draw mulitple circles
-  testdrawcircle();
-  display.display();
-  delay(2000);
-  display.clearDisplay();
+  // // draw mulitple circles
+  // testdrawcircle();
+  // display.display();
+  // delay(2000);
+  // display.clearDisplay();
 
-  // draw a white circle, 10 pixel radius
-  display.fillCircle(display.width()/2, display.height()/2, 10, WHITE);
-  display.display();
-  delay(2000);
-  display.clearDisplay();
+  // // draw a white circle, 10 pixel radius
+  // display.fillCircle(display.width()/2, display.height()/2, 10, WHITE);
+  // display.display();
+  // delay(2000);
+  // display.clearDisplay();
 
-  testdrawroundrect();
-  delay(2000);
-  display.clearDisplay();
+  // testdrawroundrect();
+  // delay(2000);
+  // display.clearDisplay();
 
-  testfillroundrect();
-  delay(2000);
-  display.clearDisplay();
+  // testfillroundrect();
+  // delay(2000);
+  // display.clearDisplay();
 
-  testdrawtriangle();
-  delay(2000);
-  display.clearDisplay();
+  // testdrawtriangle();
+  // delay(2000);
+  // display.clearDisplay();
 
-  testfilltriangle();
-  delay(2000);
-  display.clearDisplay();
+  // testfilltriangle();
+  // delay(2000);
+  // display.clearDisplay();
 
-  // draw the first ~12 characters in the font
-  testdrawchar();
-  display.display();
-  delay(2000);
-  display.clearDisplay();
+  // // draw the first ~12 characters in the font
+  // testdrawchar();
+  // display.display();
+  // delay(2000);
+  // display.clearDisplay();
 
-  // draw scrolling text
-  testscrolltext();
-  delay(2000);
-  display.clearDisplay();
+  // // draw scrolling text
+  // testscrolltext();
+  // delay(2000);
+  // display.clearDisplay();
 
-  // text display tests
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
-  display.setCursor(0,0);
-  display.println("Hello, world!");
-  display.setTextColor(BLACK, WHITE); // 'inverted' text
-  display.println(3.141592);
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.print("0x"); display.println(0xDEADBEEF, HEX);
-  display.display();
-  delay(2000);
-  display.clearDisplay();
+  // // text display tests
+  // display.setTextSize(1);
+  // display.setTextColor(WHITE);
+  // display.setCursor(0,0);
+  // display.println("Hello, world!");
+  // display.setTextColor(BLACK, WHITE); // 'inverted' text
+  // display.println(3.141592);
+  // display.setTextSize(2);
+  // display.setTextColor(WHITE);
+  // display.print("0x"); display.println(0xDEADBEEF, HEX);
+  // display.display();
+  // delay(2000);
+  // display.clearDisplay();
 
-  // miniature bitmap display
-  display.drawBitmap(30, 16,  logo16_glcd_bmp, 16, 16, 1);
-  display.display();
-  delay(1);
+  // // miniature bitmap display
+  // display.drawBitmap(30, 16,  logo16_glcd_bmp, 16, 16, 1);
+  // display.display();
+  // delay(1);
 
-  // invert the display
-  display.invertDisplay(true);
-  delay(1000);
-  display.invertDisplay(false);
-  delay(1000);
-  display.clearDisplay();
+  // // invert the display
+  // display.invertDisplay(true);
+  // delay(1000);
+  // display.invertDisplay(false);
+  // delay(1000);
+  // display.clearDisplay();
+
+  testContrast();
 
   // draw a bitmap icon and 'animate' movement
   testdrawbitmap(logo16_glcd_bmp, LOGO16_GLCD_HEIGHT, LOGO16_GLCD_WIDTH);
+
 }
 
 
@@ -173,6 +188,46 @@ void loop() {
 
 }
 
+void testContrast()
+{
+  for(int j=0; j<10; j++){
+    // if(j<3){
+    // display.ssd1306_command(SSD1306_SETPRECHARGE);
+    // display.ssd1306_command(0x10);
+    // }
+    // else
+    // {
+    display.ssd1306_command(SSD1306_SETPRECHARGE);
+    display.ssd1306_command(0x01*j);
+    // }
+    for (uint8_t i=0; i < 0xF; i=i+1) {
+      display.clearDisplay();
+      display.ssd1306_command(SSD1306_SETVCOMDETECT);
+      display.ssd1306_command(0x10*i);
+      // display.ssd1306_command(SSD1306_SETPRECHARGE);
+      // if(i=0)
+      // display.ssd1306_command(0x10*i+0x01*i);
+      // switch(i){
+      //   case 0: display.ssd1306_command(0x00); break;
+      //   case 1: display.ssd1306_command(0x01); break;
+      //   case 2: display.ssd1306_command(0x10); break;
+      //   case 3: display.ssd1306_command(0x11); break;
+      // }
+
+      // else
+      //   display.ssd1306_command(0xF1);
+      // display.setContrast(0x10*i);
+      display.fillRect(5, 5, 30, 30, 1);
+      // display.setContrast(i);
+      display.display();
+      // display.setContrast(i);
+      // Serial.println("contrast "+String(i));
+      Serial.println("contrast "+String(i));
+      delay(200);
+    }
+    delay(1000);
+  }
+}
 
 void testdrawbitmap(const uint8_t *bitmap, uint8_t w, uint8_t h) {
   uint8_t icons[NUMFLAKES][3];
@@ -191,6 +246,7 @@ void testdrawbitmap(const uint8_t *bitmap, uint8_t w, uint8_t h) {
     Serial.println(icons[f][DELTAY], DEC);
   }
 
+  uint8_t con = 0;
   while (1) {
     // draw each icon
     for (uint8_t f=0; f< NUMFLAKES; f++) {

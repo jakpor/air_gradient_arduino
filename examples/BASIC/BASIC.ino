@@ -354,6 +354,12 @@ static void boardInit(void) {
   Serial.println("Firmware Version: " + ag.getVersion());
 
   ag.display.setRotation(SCREEN_ROTATION);
+  /** Disable OLED precharge to minimize contrast -> might be unstable. Lowest stable 0x1F, highest stable 0xF1*/
+  // ag.display.ssd1306_command(SSD1306_SETPRECHARGE);
+  // ag.display.ssd1306_command(0x00);
+  /** Lower voltage on LCD*/
+  // ag.display.ssd1306_command(SSD1306_SETVCOMDETECT);
+  // ag.display.ssd1306_command(0x00);
 
   if (ag.isBasic()) {
     oledDisplay.setText("DIY Basic", ag.getVersion().c_str(), "");

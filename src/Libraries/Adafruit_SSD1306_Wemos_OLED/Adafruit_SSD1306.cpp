@@ -295,9 +295,9 @@ void Adafruit_SSD1306::begin(TwoWire& wire, uint8_t vccstate, uint8_t i2caddr) {
   if (vccstate == SSD1306_EXTERNALVCC)
     { ssd1306_command(0x22); }
   else
-    { ssd1306_command(0xF1); }
+    { ssd1306_command(0x1F); }                            // was 0xF1, disable 0x00
   ssd1306_command(SSD1306_SETVCOMDETECT);                 // 0xDB
-  ssd1306_command(0x40);
+  ssd1306_command(0x00);                                  // was 0x40
   ssd1306_command(SSD1306_DISPLAYALLON_RESUME);           // 0xA4
   ssd1306_command(SSD1306_NORMALDISPLAY);                 // 0xA6
 
